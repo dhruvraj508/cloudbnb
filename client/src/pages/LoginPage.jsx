@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function LoginPage(){
     return(
         <div className="mt-8 grow flex-col min-h-screen">
@@ -8,6 +10,10 @@ export default function LoginPage(){
                     <input type="Email" placeholder="Email" />
                     <input type="Password" placeholder="Password" />
                     <button className="primary">Login</button>
+                    <div className="text-center py-2 text-gray-500">
+                        Don't have an account yet? <br></br>
+                        <Link className="underline text-black" to={"/register"}>Register Now</Link>
+                    </div>
                 </form>
                 </div>
         </div>
