@@ -5,8 +5,10 @@ const { default: mongoose } = require('mongoose');
 const userModel = require('./models/user');
 const bcrypt = require('bcryptjs');
 const app = express();
+const jwt = require('jsonwebtoken');
 
 const userSalt = bcrypt.genSaltSync(10);
+const jwtSecret = 'secret';
 
 app.use(express.json());
 
@@ -32,9 +34,28 @@ app.post('/register', async (req, res) => {
         });
     }
     catch(e){
-        res.status(400).json(e);
+        res.status(422).json(e);
     }
     
+});
+
+app.post('/login', async (req, res) => {
+    const {email, password} = req.body;
+    const user = await userModel.findOne({email});
+    if (user){
+        if (bcrypt.compareSync(password, user.password)){
+            jwt.sign({email:user.email, id:user._id}, jwtSecret, {}, (err, token)=>{
+                if (err) throw err;
+                res.cookie('token', token).json('password ok');
+            });
+        }
+        else{
+            res.status(422).json('password not ok');
+        }
+    }
+    else{
+        res.json('user not found');
+    }
 });
 
 app.listen(4000)

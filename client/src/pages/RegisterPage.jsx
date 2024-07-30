@@ -16,7 +16,7 @@ export default function  RegisterPage(){
             alert('Registration successful, Proceed to login!');
         }
         catch(e){
-            alert('Registration failed, User already exists');
+            alert('Registration failed, Please try agian later');
         }
         
     }
