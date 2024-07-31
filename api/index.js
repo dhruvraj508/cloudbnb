@@ -6,19 +6,19 @@ const userModel = require('./models/user');
 const bcrypt = require('bcryptjs');
 const app = express();
 const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
 
 const userSalt = bcrypt.genSaltSync(10);
-const jwtSecret = 'secret';
+const jwtSecret = "secret";
 
 app.use(express.json());
-
-mongoose.connect(process.env.MONGO_URL)
-
-
+app.use(cookieParser());
 app.use(cors({
     credentials: true,
     origin: 'http://localhost:5173'
 }));
+
+mongoose.connect(process.env.MONGO_URL)
 
 app.get('/test', (req, res) => {
     res.json('test ok');
@@ -44,9 +44,12 @@ app.post('/login', async (req, res) => {
     const user = await userModel.findOne({email});
     if (user){
         if (bcrypt.compareSync(password, user.password)){
-            jwt.sign({email:user.email, id:user._id}, jwtSecret, {}, (err, token)=>{
+            jwt.sign({
+                email:user.email, 
+                id:user._id, 
+            }, jwtSecret, {}, (err, token)=>{
                 if (err) throw err;
-                res.cookie('token', token).json('password ok');
+                res.cookie('token', token).json(user);
             });
         }
         else{
@@ -56,6 +59,21 @@ app.post('/login', async (req, res) => {
     else{
         res.json('user not found');
     }
+});
+
+app.get('/profile', async (req, res) => {
+    const {token} = req.cookies;
+    if (token){
+        jwt.verify(token, jwtSecret, {}, async (err, user)=>{
+            if (err) throw err;
+            const {name, email, _id} = await userModel.findById(user.id);
+            res.json({name, email, _id});
+        });
+    }
+    else {
+        res.json('no token');
+    }
+    // res.json({token});
 });
 
 app.listen(4000)
