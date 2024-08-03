@@ -71,9 +71,13 @@ app.get('/profile', async (req, res) => {
         });
     }
     else {
-        res.json('no token');
+        res.json(null);
     }
     // res.json({token});
+});
+
+app.post('/logout', (req, res) => {
+    res.cookie('token', '').json(true);
 });
 
 app.listen(4000)
