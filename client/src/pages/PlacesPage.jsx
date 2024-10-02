@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 export default function PlacesPage() {
     const {action} = useParams();
+    const [title, setTitle] = useState('');
+    const [address, setAddress] = useState('');
+    const [addedPhotos, setAddedPhotos] = useState([]);
+    const [photoLink, setPhotoLink] = useState('');
+    const [description, setDescription] = useState('');
+    const [perks, setPerks] = useState([]);
+    const [checkInTime, setCheckInTime] = useState('');
+    const [checkOutTime, setCheckOutTime] = useState('');
+    const [maxGuests, setMaxGuests] = useState(1);
+    const [extraInfo, setExtraInfo] = useState('');
     // console.log(action);
     return(
         <div>
@@ -38,9 +48,9 @@ export default function PlacesPage() {
                             </button>
                         </div>
                         <h2 className="text-start text-2xl font-bold mt-4">Description</h2>
-                        <textarea className='border rounded-2xl'/>
+                        <textarea />
                         <h2 className="text-start text-2xl font-bold mt-4">Perks</h2>
-                        <div className='grid gap-2 grid-cols-2 md:grid-cols-4 lg:grid-cols-6'>
+                        <div className='grid mt-2 gap-2 grid-cols-2 md:grid-cols-4 lg:grid-cols-6'>
                             <label className='border p-4 flex rounded-2xl gap-2 items-center'>
                                 <input type="checkbox" />
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -77,6 +87,26 @@ export default function PlacesPage() {
                                 </svg>
                                 <span>Pets</span>
                             </label>
+                        </div>
+                        <h2 className="text-start text-2xl font-bold mt-4">Check-in, check-out times, and Guests</h2>
+                        <div className='grid gap-2 sm:grid-cols-3'>
+                            <div className='mt-2 -mb-2'>
+                                <h3>Check-in time</h3>
+                                <input type="text" />
+                            </div>
+                            <div className='mt-2 -mb-2'>
+                                <h3>Check-out time</h3>
+                                <input type="text" />
+                            </div>
+                            <div className='mt-2 -mb-2'>
+                                <h3>Maximum Guests</h3>
+                                <input type="text" />
+                            </div>
+                        </div>
+                        <h2 className="text-start text-2xl font-bold mt-4">Extra Information</h2>
+                        <textarea />
+                        <div>
+                            <button className="primary my-4">Save</button>
                         </div>
                     </form>
                 </div>
