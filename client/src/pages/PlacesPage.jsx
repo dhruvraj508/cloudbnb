@@ -13,6 +13,20 @@ export default function PlacesPage() {
     const [checkOutTime, setCheckOutTime] = useState('');
     const [maxGuests, setMaxGuests] = useState(1);
     const [extraInfo, setExtraInfo] = useState('');
+    
+    function inputHeader(text){
+        return(
+            <h2 className="text-start text-2xl font-bold mt-4">{text}</h2>
+
+        );
+    }
+    // function preInput(header){
+    //     return(
+    //         <>
+    //         {inputHeader(header)}
+    //         </>
+    //     );
+    // }
     // console.log(action);
     return(
         <div>
@@ -29,12 +43,12 @@ export default function PlacesPage() {
             {action === 'new' && (
                 <div className='text-left'>
                     <form>
-                        <h2 className="text-start text-2xl font-bold mt-4">Title</h2>
+                        {inputHeader('Title')}
                         {/* <p className="text-start text-gray-500">Include a short, apt, and catchy title for your listing!</p> */}
                         <input type='text' placeholder="Title, for example: My cozy and homely condo"/>
-                        <h2 className="text-start text-2xl font-bold mt-4">Address</h2>
+                        {inputHeader('Address')}
                         <input type='text' placeholder="Address" />
-                        <h2 className="text-start text-2xl font-bold mt-4">Photos</h2>
+                        {inputHeader('Photos')}
                         <div className='flex gap-2'>
                             <input type='text' placeholder={'Add JPG using a URL'}/>
                             <button className='bg-gray-200 px-4 rounded-2xl'>Add&nbsp;Photo</button>
