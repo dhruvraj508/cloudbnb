@@ -40,6 +40,12 @@ export default function PlacesPage() {
         setPhotoLink('');
     }
 
+
+    function uploadPhoto(ev){
+        const files = ev.target.files;
+        console.log({files});
+    }
+
     return(
         <div>
             {action !== 'new' && (
@@ -67,18 +73,19 @@ export default function PlacesPage() {
                                     type='text' placeholder={'Add JPG using a URL'}/>
                             <button onClick={photoByURL} className='bg-gray-200 px-4 rounded-2xl'>Add&nbsp;Photo</button>
                         </div>
-                        <div className='mt-3 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 '>
+                        <div className='mt-3 grid gap-3 grid-cols-3 md:grid-cols-4 lg:grid-cols-6 '>
                             {addedPhotos.length > 0 && addedPhotos.map(link => (
                                 <div>
-                                    <img src={'http://localhost:4000/uploads/'+link} alt=''/>
+                                    <img className='rounded-2xl' src={'http://localhost:4000/uploads/'+link} alt=''/>
                                 </div>
                             ))}
-                            <button className='flex gap-2 justify-center border bg-transparent rounded-2xl p-8 text-2xl text-gray-600'>
+                            <label className='cursor-pointer flex items-center gap-2 justify-center border bg-transparent rounded-2xl p-2 text-2xl text-gray-600'>
+                                <input type="file" className='hidden' onChange={uploadPhoto}/>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-8 h-8">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
                                 </svg>
                                 Upload
-                            </button>
+                            </label>
                         </div>
                         {inputHeader('Description')}
                         <textarea value={description} onChange={ev => setDescription(ev.target.value)}/>
