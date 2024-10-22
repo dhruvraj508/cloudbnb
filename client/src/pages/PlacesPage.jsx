@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Perks from '../Perks';
 import axios from 'axios';
+import { set } from 'mongoose';
 
 export default function PlacesPage() {
     const {action} = useParams();
@@ -43,7 +44,19 @@ export default function PlacesPage() {
 
     function uploadPhoto(ev){
         const files = ev.target.files;
-        console.log({files});
+        // console.log({files});
+        const data = new FormData();
+        for (let i = 0; i < files.length; i++){
+            data.append('photos', files[i]);
+        }
+        axios.post('/upload', data, {
+            headers: {'Content-Type': 'multipart/form-data'}
+        }).then(response =>{
+            const {data: filenames} = response;
+            setAddedPhotos(prev => {
+                return [...prev, ...filenames];
+            });
+        })
     }
 
     return(
@@ -80,7 +93,7 @@ export default function PlacesPage() {
                                 </div>
                             ))}
                             <label className='cursor-pointer flex items-center gap-2 justify-center border bg-transparent rounded-2xl p-2 text-2xl text-gray-600'>
-                                <input type="file" className='hidden' onChange={uploadPhoto}/>
+                                <input type="file" multiple className='hidden' onChange={uploadPhoto}/>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-8 h-8">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
                                 </svg>
