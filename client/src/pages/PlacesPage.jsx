@@ -64,8 +64,8 @@ export default function PlacesPage() {
             {action !== 'new' && (
                 <div className="text-center">
                 <Link className="inline-flex gap-2 bg-primary text-white py-2 px-6 rounded-full" to = {'/account/listings/new'}>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
                     Add a new listing
                 </Link>
@@ -88,14 +88,14 @@ export default function PlacesPage() {
                         </div>
                         <div className='mt-3 grid gap-3 grid-cols-3 md:grid-cols-4 lg:grid-cols-6 '>
                             {addedPhotos.length > 0 && addedPhotos.map(link => (
-                                <div>
-                                    <img className='rounded-2xl' src={'http://localhost:4000/uploads/'+link} alt=''/>
+                                <div className='h-32' flex>
+                                    <img className='rounded-2xl w-full object-cover ' src={'http://localhost:4000/uploads/'+link} alt=''/>
                                 </div>
                             ))}
-                            <label className='cursor-pointer flex items-center gap-2 justify-center border bg-transparent rounded-2xl p-2 text-2xl text-gray-600'>
+                            <label className='h-32 cursor-pointer flex items-center gap-2 justify-center border bg-transparent rounded-2xl p-2 text-2xl text-gray-600'>
                                 <input type="file" multiple className='hidden' onChange={uploadPhoto}/>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-8 h-8">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-8 h-8">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
                                 </svg>
                                 Upload
                             </label>
