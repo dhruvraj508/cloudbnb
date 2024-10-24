@@ -110,4 +110,8 @@ app.post('/upload', photosMiddleware.array('photos',100), (req, res) => {
     res.json(uploadedFiles);    
 });
 
+app.post('/listings', function(req, res){
+
+});
+
 app.listen(4000)
