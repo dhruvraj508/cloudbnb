@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PhotoUploader from '../PhotoUploader';
 import Perks from '../Perks';
 import AccountNav from '../AccountNav';
+import { Navigate, useParams } from 'react-router';
+import axios from 'axios';
 
 export default function PlacesFormPage() {
+    const {id} = useParams();
     const [title, setTitle] = useState('');
     const [address, setAddress] = useState('');
     const [addedPhotos, setAddedPhotos] = useState([]);
@@ -13,6 +16,25 @@ export default function PlacesFormPage() {
     const [checkOutTime, setCheckOutTime] = useState('');
     const [maxGuests, setMaxGuests] = useState(1);
     const [extraInfo, setExtraInfo] = useState('');
+    const [redirect, setRedirect] = useState(false);    
+
+    useEffect(() => {
+        if (!id) {
+            return;
+        }
+        axios.get('/listings/'+id).then(response => {
+            const {data} = response;
+            setTitle(data.title);
+            setAddress(data.address);
+            setAddedPhotos(data.photos);
+            setDescription(data.description);
+            setPerks(data.perks);
+            setCheckInTime(data.checkIn);
+            setCheckOutTime(data.checkOut);
+            setMaxGuests(data.maxGuests);
+            setExtraInfo(data.miscInfo);
+        });
+    }, [id]);
 
     function inputHeader(text){
         return(
@@ -20,22 +42,33 @@ export default function PlacesFormPage() {
 
         );
     }
-    async function addNewPlace(ev){
-        ev.preventDefault();
-          
-        await axios.post('/listings', {
+    async function savePlace(ev){
+        const placeData = {
             title, address, addedPhotos, 
             description, perks, checkInTime, 
             checkOutTime, maxGuests, extraInfo
-        });
-
+        };
+        ev.preventDefault();
+        if (id){
+            await axios.put('/listings', {
+                id, ...placeData
+            });
+            setRedirect(true);
+        }
+        else {
+            await axios.post('/listings', placeData);
+            setRedirect(true);
+        }  
     }
-
+    
+    if (redirect){
+        return <Navigate to="/account/listings"/>
+    }
 
     return (
         <div className='text-left'>
             <AccountNav/>
-            <form onSubmit={addNewPlace}>
+            <form onSubmit={savePlace}>
                 {inputHeader('Title')}
                 {/* <p className="text-start text-gray-500">Include a short, apt, and catchy title for your listing!</p> */}
                 <input type='text' value={title} onChange={ev => setTitle(ev.target.value)} placeholder="Title, for example: My cozy and homely condo"/>

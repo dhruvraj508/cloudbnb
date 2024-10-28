@@ -11,6 +11,7 @@ const cookieParser = require('cookie-parser');
 const imageDownloader = require('image-downloader');
 const multer = require('multer');
 const fs = require('fs');
+const PlaceModel = require('./models/place');
 
 const userSalt = bcrypt.genSaltSync(10);
 const jwtSecret = "secret";
@@ -120,11 +121,48 @@ app.post('/listings', (req, res) => {
         if (err) throw err;
         const placeDoc = await placeModel.create({
             owner: user.id,
-            title, address, addedPhotos, 
-            description, perks, checkInTime, 
-            checkOutTime, maxGuests, extraInfo 
+            title, address, photos: addedPhotos, 
+            description, perks, checkIn: checkInTime, 
+            checkOut: checkOutTime, maxGuests, miscInfo: extraInfo 
         });
         res.json(placeDoc);
+    });
+    
+});
+
+app.get('/listings', async (req, res) => {
+    const {token} = req.cookies;
+    jwt.verify(token, jwtSecret, {}, async (err, user)=>{
+        const {id} = user;
+        res.json(await PlaceModel.find({owner:id}));
+    });
+});
+
+app.get('/listings/:id', async (req, res) => {
+    const {id} = req.params;
+    res.json(await PlaceModel.findById(id));
+});
+
+app.put('/listings', async (req, res) => {
+    const {token} = req.cookies;
+    const {
+        id, title, address, addedPhotos, 
+        description, perks, checkInTime, 
+        checkOutTime, maxGuests, extraInfo
+    } = req.body;
+    jwt.verify(token, jwtSecret, {}, async (err, user)=>{
+        const placeDoc = await PlaceModel.findById(id);
+        // res.json(placeDoc.owner);
+
+        if (user.id === placeDoc.owner.toString()){
+            placeDoc.set({
+                title, address, photos: addedPhotos, 
+                description, perks, checkIn: checkInTime, 
+                checkOut: checkOutTime, maxGuests, miscInfo: extraInfo
+            });
+            await placeDoc.save();
+            res.json('ok');
+        }
     });
     
 });
