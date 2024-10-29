@@ -115,14 +115,14 @@ app.post('/upload', photosMiddleware.array('photos',100), (req, res) => {
 app.post('/listings', (req, res) => {
     const {token} = req.cookies;
     const {title, address, addedPhotos, 
-        description, perks, checkInTime, 
+        description, price, perks, checkInTime, 
         checkOutTime, maxGuests, extraInfo} = req.body;
     jwt.verify(token, jwtSecret, {}, async (err, user)=>{
         if (err) throw err;
         const placeDoc = await placeModel.create({
             owner: user.id,
             title, address, photos: addedPhotos, 
-            description, perks, checkIn: checkInTime, 
+            description, price, perks, checkIn: checkInTime, 
             checkOut: checkOutTime, maxGuests, miscInfo: extraInfo 
         });
         res.json(placeDoc);
@@ -130,7 +130,7 @@ app.post('/listings', (req, res) => {
     
 });
 
-app.get('/listings', async (req, res) => {
+app.get('/user-listings', async (req, res) => {
     const {token} = req.cookies;
     jwt.verify(token, jwtSecret, {}, async (err, user)=>{
         const {id} = user;
@@ -147,7 +147,7 @@ app.put('/listings', async (req, res) => {
     const {token} = req.cookies;
     const {
         id, title, address, addedPhotos, 
-        description, perks, checkInTime, 
+        description, price, perks, checkInTime, 
         checkOutTime, maxGuests, extraInfo
     } = req.body;
     jwt.verify(token, jwtSecret, {}, async (err, user)=>{
@@ -157,14 +157,17 @@ app.put('/listings', async (req, res) => {
         if (user.id === placeDoc.owner.toString()){
             placeDoc.set({
                 title, address, photos: addedPhotos, 
-                description, perks, checkIn: checkInTime, 
+                description, price, perks, checkIn: checkInTime, 
                 checkOut: checkOutTime, maxGuests, miscInfo: extraInfo
             });
             await placeDoc.save();
             res.json('ok');
         }
     });
-    
+});
+
+app.get('/listings', async (req, res) => {
+    res.json(await PlaceModel.find());
 });
 
 app.listen(4000)

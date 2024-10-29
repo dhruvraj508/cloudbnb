@@ -11,6 +11,7 @@ export default function PlacesFormPage() {
     const [address, setAddress] = useState('');
     const [addedPhotos, setAddedPhotos] = useState([]);
     const [description, setDescription] = useState('');
+    const [price, setPrice] = useState();
     const [perks, setPerks] = useState([]);
     const [checkInTime, setCheckInTime] = useState('');
     const [checkOutTime, setCheckOutTime] = useState('');
@@ -28,6 +29,7 @@ export default function PlacesFormPage() {
             setAddress(data.address);
             setAddedPhotos(data.photos);
             setDescription(data.description);
+            setPrice(data.price);
             setPerks(data.perks);
             setCheckInTime(data.checkIn);
             setCheckOutTime(data.checkOut);
@@ -45,7 +47,7 @@ export default function PlacesFormPage() {
     async function savePlace(ev){
         const placeData = {
             title, address, addedPhotos, 
-            description, perks, checkInTime, 
+            description, price, perks, checkInTime, 
             checkOutTime, maxGuests, extraInfo
         };
         ev.preventDefault();
@@ -78,6 +80,8 @@ export default function PlacesFormPage() {
                 <PhotoUploader addedPhotos = {addedPhotos} onChange={setAddedPhotos}/>
                 {inputHeader('Description')}
                 <textarea value={description} onChange={ev => setDescription(ev.target.value)}/>
+                {inputHeader('Price')}
+                <input type='number' value={price} onChange={ev => setPrice(ev.target.value)} placeholder="Price Per Night"/>
                 {inputHeader('Perks')}
                 <div className='grid mt-2 gap-2 grid-cols-2 md:grid-cols-4 lg:grid-cols-6'>
                     <Perks selected={perks} onChange={setPerks}/>
