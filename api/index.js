@@ -170,4 +170,5 @@ app.get('/listings', async (req, res) => {
     res.json(await PlaceModel.find());
 });
 
+
 app.listen(4000)

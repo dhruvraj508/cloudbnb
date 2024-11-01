@@ -11,15 +11,15 @@ export default function Header() {
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-6">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z" />
                 </svg>
-                <span className='font-bold text-xl'>cloudbnb</span>
+                <span className='font-semibold text-xl'>cloudbnb</span>
             </Link>
             <div className='flex gap-3 border border-gray-300 rounded-full py-2 px-4 shadow-md shadow-gray-200'>
-                <div className='font-bold'>Anywhere</div>
+                <div className='font-semibold'>Anywhere</div>
                 <div className="border-l border-gray-400"></div>
-                <div className='font-bold'>Any Week</div>
+                <div className='font-semibold'>Any Week</div>
                 <div className="border-l border-gray-400"></div>
                 <div>Add Guests</div>
-                <button className='bg-primary text-black p-1 rounded-full'>
+                <button className='bg-primary text-white p-1 rounded-full'>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                     </svg>
