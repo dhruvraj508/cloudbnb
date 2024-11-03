@@ -21,7 +21,7 @@ export default function IndexPage() {
                     <h2 className="text-left font-semibold">{place.address}</h2>
                     <h3 className="text-left text-sm text-gray-500 ">{place.title}</h3>
                     <div className="text-left mt-1">
-                        <span className="font-bold">${place.price}</span> per night
+                        <span className="font-bold">${place.price}</span> night
                     </div>
                 </Link>
             ))}
