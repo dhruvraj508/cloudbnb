@@ -12,6 +12,7 @@ const imageDownloader = require('image-downloader');
 const multer = require('multer');
 const fs = require('fs');
 const PlaceModel = require('./models/place');
+const BookingModel = require('./models/booking');
 
 const userSalt = bcrypt.genSaltSync(10);
 const jwtSecret = "secret";
@@ -25,6 +26,16 @@ app.use(cors({
 }));
 
 mongoose.connect(process.env.MONGO_URL)
+
+function getUserFromToken(req) {
+    return new Promise((resolve, reject) => {
+        jwt.verify(req.cookies.token, jwtSecret, {}, async (err, user)=>{
+            if (err) throw err;
+            resolve(user);
+        });
+    });
+    
+}
 
 app.get('/test', (req, res) => {
     res.json('test ok');
@@ -79,7 +90,7 @@ app.get('/profile', async (req, res) => {
     else {
         res.json(null);
     }
-    // res.json({token});
+
 });
 
 app.post('/logout', (req, res) => {
@@ -170,5 +181,31 @@ app.get('/listings', async (req, res) => {
     res.json(await PlaceModel.find());
 });
 
+
+app.post('/bookings', async (req, res) => {
+    const {
+        place, checkInTime, 
+        checkOutTime, numberOfGuests, 
+        fullName, mobile, 
+        price
+    } = req.body;
+    BookingModel.create({
+        place, checkInTime, 
+        checkOutTime, numberOfGuests, 
+        fullName, mobile, 
+        price
+    }).then((doc)=> {
+        res.json(doc);
+    }).catch((err) => {
+        throw err;
+    });
+});
+
+
+
+// app.get('/bookings', async (req, res) => {
+//     const user = await getUserFromToken(req);
+//     res.json( BookingModel)
+// });
 
 app.listen(4000)

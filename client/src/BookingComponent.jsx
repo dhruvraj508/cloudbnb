@@ -2,16 +2,38 @@ import React, {useState} from 'react';
 import {differenceInCalendarDays} from 'date-fns'
 import {UserContext} from './UserContext';
 import {useContext} from 'react';
+import axios from 'axios';
+import { Navigate } from 'react-router';
 
 export default function BookingComponent({place}){
     const [checkInTime, setCheckInTime] = useState('');
     const [checkOutTime, setCheckOutTime] = useState('');
     const [numberOfGuests, setNumberOfGuests] = useState(1);
-    const { user, ready } = useContext(UserContext);
+    const [fullName, setFullName] = useState('');
+    const [mobile, setMobile] = useState('');
+    const [redirect, setRedirect] = useState('');
+    // const { user, ready } = useContext(UserContext);
     let days = 0;
     if (checkInTime && checkOutTime){
         days = differenceInCalendarDays(new Date(checkOutTime), new Date(checkInTime));
     }
+
+    async function reserveThisPlace(){
+        
+        const response = await axios.post('/bookings', {
+            checkInTime, place: place._id,
+            checkOutTime, price: days * place.price,
+            numberOfGuests, fullName, 
+            mobile});
+        const bookingId = response.data._id;
+        setRedirect(`/account/bookings/${bookingId}`);
+    }
+
+    if (redirect){
+        return <Navigate to={redirect}/>
+    }
+    
+    
     return (
         <div className="bg-white border shadow-lg p-4 rounded-2xl mt-4">
                     <div className="text-2xl text-center">
@@ -38,15 +60,20 @@ export default function BookingComponent({place}){
                                     value={numberOfGuests} 
                                     onChange={ev=>setNumberOfGuests(ev.target.value)}/>
                         </div>
-                        {days >0 && !!user &&(
+                        {days >0 &&(
                             <div className="py-3 px-4 border-t">
-                                <label>Name:</label>
-                                <input type="Text" 
-                                        placeholder={user.name}/>
+                                <label>Full Name:</label>
+                                <input type="text" 
+                                        value={fullName} 
+                                        onChange={ev=>setFullName(ev.target.value)}/>
+                                <label>Phone Number:</label>
+                                <input type="tel" 
+                                        value={mobile} 
+                                        onChange={ev=>setMobile(ev.target.value)}/>
                         </div>
                         )}
                     </div>
-                    <button className="primary mt-4">
+                    <button onClick={reserveThisPlace} className="primary mt-4">
                         Reserve for   
                         {days > 0 && (
                             <span className='mx-1'>
