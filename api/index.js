@@ -183,6 +183,7 @@ app.get('/listings', async (req, res) => {
 
 
 app.post('/bookings', async (req, res) => {
+    const user = await getUserFromToken(req);
     const {
         place, checkInTime, 
         checkOutTime, numberOfGuests, 
@@ -193,7 +194,7 @@ app.post('/bookings', async (req, res) => {
         place, checkInTime, 
         checkOutTime, numberOfGuests, 
         fullName, mobile, 
-        price
+        price, user: user.id
     }).then((doc)=> {
         res.json(doc);
     }).catch((err) => {
@@ -203,9 +204,9 @@ app.post('/bookings', async (req, res) => {
 
 
 
-// app.get('/bookings', async (req, res) => {
-//     const user = await getUserFromToken(req);
-//     res.json( BookingModel)
-// });
+app.get('/bookings', async (req, res) => {
+    const user = await getUserFromToken(req);
+    res.json(await BookingModel.find({user: user.id}).populate('place') );
+});
 
 app.listen(4000)

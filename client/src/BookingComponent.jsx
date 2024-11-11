@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {differenceInCalendarDays} from 'date-fns'
 import {UserContext} from './UserContext';
 import {useContext} from 'react';
@@ -12,7 +12,15 @@ export default function BookingComponent({place}){
     const [fullName, setFullName] = useState('');
     const [mobile, setMobile] = useState('');
     const [redirect, setRedirect] = useState('');
-    // const { user, ready } = useContext(UserContext);
+    const { user } = useContext(UserContext);
+    
+    useEffect(()=>{
+        if (user) {
+            setFullName(user.name);
+        }
+    }, [user]);
+    
+    
     let days = 0;
     if (checkInTime && checkOutTime){
         days = differenceInCalendarDays(new Date(checkOutTime), new Date(checkInTime));
