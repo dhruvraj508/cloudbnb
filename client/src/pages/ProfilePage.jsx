@@ -4,7 +4,7 @@ import { Link, Navigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useState } from 'react';
 import PlacesPage from './PlacesPage';
-import AccountNav from '../AccountNav';
+import AccountNav from '../components/AccountNav';
 
 export default function ProfilePage() {
     const [toHome, setToHome] = useState(null);

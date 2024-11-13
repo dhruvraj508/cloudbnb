@@ -1,9 +1,9 @@
 import { Link, useParams } from 'react-router-dom';
 import PlacesFormPage from './PlacesFormPage';
-import AccountNav from '../AccountNav';
+import AccountNav from '../components/AccountNav';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import PlaceImg from '../PlaceImg';
+import PlaceImg from '../components/PlaceImg';
 
 export default function PlacesPage() {
     const [places, setPlaces] = useState([]);
@@ -37,8 +37,7 @@ export default function PlacesPage() {
                                 <p className='text-sm mt-2'>{place.description}</p>
                             </div>
                             </Link>
-                        </div>
-                        
+                        </div>    
                     ))}
                 </div>
         </div>
